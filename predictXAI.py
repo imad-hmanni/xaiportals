@@ -1797,7 +1797,7 @@ def main():
                 suggestions = st.session_state.gemini_suggestions if st.session_state.gemini_suggestions else recommender.get_content_suggestions_static()
                 
                 if not st.session_state.gemini_suggestions:
-                     st.caption("Affichage des suggestions statiques (cliquez sur le bouton pour utiliser Gemini).")
+                     st.caption("Affichage des suggestions statiques (cliquez sur le bouton pour voir des résultats).")
 
                 for s in suggestions:
                     with st.container(border=True):
@@ -1903,4 +1903,5 @@ def main():
             st.error("Veuillez vérifier que le fichier 'Instantané_des_rapports.csv' est bien présent dans le même dossier.")
 
 if __name__ == "__main__":
+
     main()
