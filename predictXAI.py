@@ -758,7 +758,7 @@ except ImportError:
     GEMINI_AVAILABLE = False
 
 # Configuration de la page
-st.set_page_config(page_title="XAI - Dashboard Standard", page_icon="🇲🇦", layout="wide")
+st.set_page_config(page_title="MGE XAI - Dashboard Standard", page_icon="🇲🇦", layout="wide")
 
 # --- CSS Personnalisé pour un look professionnel ---
 st.markdown("""
@@ -1210,86 +1210,6 @@ class SemanticAnalyzer:
         except:
             return ["Erreur lors de l'analyse thématique (données insuffisantes)"]
 
-# --- 2d. MOTEUR RECOMMANDATION DYNAMIQUE (PERSONNALISATION & CREATION) ---
-class ContentRecommender:
-    def __init__(self, df_pages):
-        self.df_pages = df_pages
-        # API Key fournie par l'utilisateur
-        self.GEMINI_API_KEY = 'AIzaSyCsAvkHmKkW8uvOxZklHtnMVQfOGkpKtXE' 
-
-    def get_content_suggestions_static(self):
-        """ Suggestions 'Règles métiers' (Fallback ou par défaut) """
-        suggestions = [
-            {
-                "segment": "",
-                "context": "",
-                "missing_content": "",
-                "reasoning": "",
-                "priority": ""
-            }
-        ]
-        return suggestions
-
-    def generate_gemini_suggestions(self):
-        """ Utilise Google Gemini pour générer des idées basées sur les données réelles """
-        if not GEMINI_AVAILABLE:
-            return self.get_content_suggestions_static()
-
-        # Construction du prompt avec les données réelles du CSV
-        top_titles = self.df_pages.head(15)['Titre'].tolist()
-        titles_str = "\n".join([f"- {t}" for t in top_titles])
-
-        prompt = f"""
-        Tu es un expert en stratégie de contenu web et UX.
-        Voici les titres des pages les plus performantes du site 'Morocco Gaming Expo' (données réelles) :
-        {titles_str}
-
-        Analyse ces titres pour comprendre ce qui intéresse l'audience.
-        Ensuite, propose 10 IDÉES DE NOUVEAU CONTENU (qui n'existent pas dans la liste) pour combler des manques ou attirer de nouveaux segments.
-
-        Réponds UNIQUEMENT au format JSON suivant (sans markdown autour) :
-        [
-            {{
-                "segment": "Nom du segment cible",
-                "context": "Pourquoi ce segment (ex: mobile, week-end)",
-                "missing_content": "Titre du contenu à créer",
-                "reasoning": "Pourquoi cela va marcher (lien avec les données)",
-                "priority": "Haute/Moyenne/Critique"
-            }}
-        ]
-        """
-        
-        try:
-            client = genai.Client(api_key=self.GEMINI_API_KEY)
-            
-            model = "gemini-3-flash-preview" # Utilisation d'un modèle standard stable
-            
-            # Appel API Gemini
-            # Utilisation de generate_content_stream pour la cohérence avec votre exemple
-            response_text = ""
-            for chunk in client.models.generate_content_stream(
-                model=model,
-                contents=prompt
-            ):
-                response_text += chunk.text
-            
-            # Nettoyage basique pour JSON
-            json_str = response_text.replace("```json", "").replace("```", "").strip()
-            
-            # Parsing de la réponse JSON
-            suggestions = json.loads(json_str)
-            return suggestions
-
-        except Exception as e:
-            # Fallback en cas d'erreur API (quota, réseau...)
-            # On retourne une structure compatible avec l'affichage, incluant l'erreur
-            return [{"segment": "Erreur API", "context": "Gemini", "missing_content": f"Erreur: {str(e)}", "reasoning": "Vérifiez la clé API ou les quotas", "priority": "Haute"}]
-
-    def get_content_suggestions(self):
-        # Cette méthode n'est plus utilisée directement si on passe par le bouton Gemini, 
-        # mais on la garde pour la compatibilité ou le fallback manuel si besoin.
-        return self.get_content_suggestions_static()
-
 # --- 2e. MOTEUR D'OPTIMISATION DE CONTENU (CLUSTERING K-MEANS) ---
 class ContentOptimizer:
     def __init__(self, df_pages):
@@ -1585,7 +1505,7 @@ def main():
     st.sidebar.header("📂 Configuration des Données")
     
     # 1. Nom du site (Optionnel)
-    site_name = st.sidebar.text_input("Nom du Site / Portail", value="Web Site")
+    site_name = st.sidebar.text_input("Nom du Site / Portail", value="Site MGE")
     
     # 2. Uploader Universel
     uploaded_file = st.sidebar.file_uploader("Fichier CSV Google Analytics", type=['csv'])
@@ -1797,7 +1717,7 @@ def main():
                 suggestions = st.session_state.gemini_suggestions if st.session_state.gemini_suggestions else recommender.get_content_suggestions_static()
                 
                 if not st.session_state.gemini_suggestions:
-                     st.caption("Affichage des suggestions statiques (cliquez sur le bouton pour voir des résultats).")
+                     st.caption("Affichage des suggestions statiques (cliquez sur le bouton pour utiliser Gemini).")
 
                 for s in suggestions:
                     with st.container(border=True):
@@ -1903,7 +1823,4 @@ def main():
             st.error("Veuillez vérifier que le fichier 'Instantané_des_rapports.csv' est bien présent dans le même dossier.")
 
 if __name__ == "__main__":
-
     main()
-
-
