@@ -758,7 +758,7 @@ except ImportError:
     GEMINI_AVAILABLE = False
 
 # Configuration de la page
-st.set_page_config(page_title="MGE XAI - Dashboard Standard", page_icon="🇲🇦", layout="wide")
+st.set_page_config(page_title="XAI - Dashboard Standard", page_icon="🇲🇦", layout="wide")
 
 # --- CSS Personnalisé pour un look professionnel ---
 st.markdown("""
@@ -1824,4 +1824,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
