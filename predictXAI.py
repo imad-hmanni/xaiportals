@@ -1505,7 +1505,7 @@ def main():
     st.sidebar.header("📂 Configuration des Données")
     
     # 1. Nom du site (Optionnel)
-    site_name = st.sidebar.text_input("Nom du Site / Portail", value="Site MGE")
+    site_name = st.sidebar.text_input("Nom du Site / Portail", value="Site Web")
     
     # 2. Uploader Universel
     uploaded_file = st.sidebar.file_uploader("Fichier CSV Google Analytics", type=['csv'])
@@ -1824,5 +1824,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
