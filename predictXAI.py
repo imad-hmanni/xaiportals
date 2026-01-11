@@ -758,7 +758,7 @@ except ImportError:
     GEMINI_AVAILABLE = False
 
 # Configuration de la page
-st.set_page_config(page_title="MGE XAI - Dashboard Standard", page_icon="🇲🇦", layout="wide")
+st.set_page_config(page_title="XAI - Dashboard Standard", page_icon="🇲🇦", layout="wide")
 
 # --- CSS Personnalisé pour un look professionnel ---
 st.markdown("""
@@ -1585,7 +1585,7 @@ def main():
     st.sidebar.header("📂 Configuration des Données")
     
     # 1. Nom du site (Optionnel)
-    site_name = st.sidebar.text_input("Nom du Site / Portail", value="Site MGE")
+    site_name = st.sidebar.text_input("Nom du Site / Portail", value="Web Site")
     
     # 2. Uploader Universel
     uploaded_file = st.sidebar.file_uploader("Fichier CSV Google Analytics", type=['csv'])
@@ -1905,4 +1905,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
