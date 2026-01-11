@@ -425,7 +425,7 @@ class ContentRecommender:
         try:
             client = genai.Client(api_key=self.GEMINI_API_KEY)
             
-            model = "gemini-2.0-flash-exp" # Utilisation d'un modèle standard stable
+            model = "gemini-3-flash-preview" # Utilisation d'un modèle standard stable
             
             # Appel API Gemini
             # Utilisation de generate_content_stream pour la cohérence avec votre exemple
@@ -1824,6 +1824,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
